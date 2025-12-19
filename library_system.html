@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eKMS - Library Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow-x: hidden;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Login Page Styles */
+        .login-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-page::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -200px;
+            left: -200px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .login-page::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            bottom: -150px;
+            right: -150px;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .login-container {
+            text-align: center;
+            animation: fadeIn 0.8s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            margin-bottom: 40px;
+            animation: slideInLeft 0.6s ease-out;
+        }
+
+        .logo-text {
+            font-size: 56px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 2px;
+            animation: shimmer 3s infinite linear;
+            background-size: 1000px 100%;
+            background-image: linear-gradient(90deg, #ff6b6b 0%, #ee5a6f 40%, #fff 50%, #ee5a6f 60%, #ff6b6b 100%);
+        }
+
+        .logo-icon {
+            display: inline-block;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 50%;
+            position: relative;
+            margin-right: 15px;
+            vertical-align: middle;
+            animation: pulse 2s ease-in-out infinite;
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.4);
+        }
+
+        .logo-icon::before {
+            content: '📚';
+            position: absolute;
+            font-size: 35px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            width: 420px;
+            animation: slideInRight 0.6s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .login-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            font-size: 28px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .login-body {
+            padding: 40px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+            position: relative;
+            animation: fadeIn 0.8s ease-out backwards;
+        }
+
+        .input-group:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .input-group:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 22px;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 16px 20px 16px 55px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .login-input:focus + .input-icon {
+            color: #667eea;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .login-links {
+            text-align: left;
+            margin: 25px 0;
+            animation: fadeIn 0.8s ease-out 0.4s backwards;
+        }
+
+        .login-links a {
+            color: #667eea;
+            text-decoration: none;
+            display: block;
+            margin: 12px 0;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-left: 30px;
+            cursor: pointer;
+        }
+
+        .login-links a:hover {
+            color: #764ba2;
+            transform: translateX(5px);
+        }
+        
+        .back-link {
+            display: inline-block;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: #764ba2;
+            transform: translateX(-5px);
+        }
+
+        .info-icon {
+            position: absolute;
+            left: 0;
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 50%;
+            color: white;
+            text-align: center;
+            line-height: 22px;
+            font-weight: bold;
+            font-size: 13px;
+            box-shadow: 0 4px 10px rgba(245, 87, 108, 0.3);
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            animation: fadeIn 0.8s ease-out 0.5s backwards;
+            letter-spacing: 1px;
+        }
+
+        .login-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .login-button:active {
+            transform: translateY(-1px);
+        }
+
+        /* Header Styles */
+        .header {
+            background: white;
+            padding: 25px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            animation: slideInLeft 0.6s ease-out;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .header-logo-circle {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .header-logo-circle:hover {
+            transform: rotate(360deg);
+        }
+
+        .header-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-subtitle {
+            font-size: 12px;
+            color: #999;
+            font-weight: 500;
+            letter-spacing: 1px;
+            margin-bottom: 3px;
+        }
+
+        .header-title {
+            color: #2c5282;
+            font-size: 22px;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 35px;
+            animation: fadeIn 0.8s ease-out 0.3s backwards;
+        }
+
+        .header-nav a {
+            color: #555;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .header-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+
+        .header-nav a:hover {
+            color: #667eea;
+        }
+
+        .header-nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            min-height: calc(100vh - 120px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #2c3e50 0%, #1a252f 100%);
+            color: white;
+            animation: slideInLeft 0.6s ease-out 0.2s backwards;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            animation: fadeIn 0.5s ease-out backwards;
+        }
+
+        .sidebar-menu li:nth-child(1) { animation-delay: 0.1s; }
+        .sidebar-menu li:nth-child(2) { animation-delay: 0.15s; }
+        .sidebar-menu li:nth-child(3) { animation-delay: 0.2s; }
+        .sidebar-menu li:nth-child(4) { animation-delay: 0.25s; }
+        .sidebar-menu li:nth-child(5) { animation-delay: 0.3s; }
+        .sidebar-menu li:nth-child(6) { animation-delay: 0.35s; }
+        .sidebar-menu li:nth-child(7) { animation-delay: 0.4s; }
+        .sidebar-menu li:nth-child(8) { animation-delay: 0.45s; }
+        .sidebar-menu li:nth-child(9) { animation-delay: 0.5s; }
+        .sidebar-menu li:nth-child(10) { animation-delay: 0.55s; }
+        .sidebar-menu li:nth-child(11) { animation-delay: 0.6s; }
+        .sidebar-menu li:nth-child(12) { animation-delay: 0.65s; }
+        .sidebar-menu li:nth-child(13) { animation-delay: 0.7s; }
+        .sidebar-menu li:nth-child(14) { animation-delay: 0.75s; }
+        .sidebar-menu li:nth-child(15) { animation-delay: 0.8s; }
+
+        .sidebar-menu a {
+            display: block;
+            padding: 18px 25px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar-menu a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            transition: width 0.3s ease;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+            color: white;
+            padding-left: 35px;
+            border-left: 4px solid #667eea;
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            padding: 40px;
+            background: #f8f9fa;
+            animation: fadeIn 0.8s ease-out 0.3s backwards;
+        }
+
+        .page-title {
+            color: #2c3e50;
+            font-size: 36px;
+            margin-bottom: 40px;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            animation: fadeIn 0.8s ease-out;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Profile Page */
+        .profile-container {
+            display: flex;
+            gap: 40px;
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .profile-left {
+            width: 320px;
+            text-align: center;
+            animation: slideInLeft 0.6s ease-out 0.2s backwards;
+        }
+
+        .profile-avatar {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0 auto 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+            transition: transform 0.3s ease;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .avatar-placeholder {
+            width: 140px;
+            height: 140px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+        }
+
+        .profile-name, .profile-email, .profile-address {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 18px;
+            margin: 15px 0;
+            border-radius: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .profile-name {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 15px;
+        }
+
+        .profile-email, .profile-address {
+            font-size: 13px;
+            color: #555;
+        }
+
+        .profile-name:hover, .profile-email:hover, .profile-address:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-right {
+            flex: 1;
+            animation: slideInRight 0.6s ease-out 0.2s backwards;
+        }
+
+        .profile-info {
+            margin-bottom: 35px;
+        }
+
+        .info-row {
+            display: flex;
+            padding: 20px 0;
+            border-bottom: 2px solid #f0f0f0;
+            transition: all 0.3s ease;
+            animation: fadeIn 0.6s ease-out backwards;
+        }
+
+        .info-row:nth-child(1) { animation-delay: 0.1s; }
+        .info-row:nth-child(2) { animation-delay: 0.2s; }
+        .info-row:nth-child(3) { animation-delay: 0.3s; }
+        .info-row:nth-child(4) { animation-delay: 0.4s; }
+
+        .info-row:hover {
+            background: #f8f9fa;
+            padding-left: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-label {
+            width: 220px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 15px;
+        }
+
+        .info-value {
+            flex: 1;
+            color: #555;
+            font-size: 15px;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 20px;
+            margin-top: 35px;
+            animation: fadeIn 0.8s ease-out 0.5s backwards;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            box-shadow: 0 10px 25px rgba(245, 87, 108, 0.3);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 15px 35px rgba(245, 87, 108, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            box-shadow: 0 10px 25px rgba(79, 172, 254, 0.3);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 15px 35px rgba(79, 172, 254, 0.4);
+        }
+
+        /* Simple pages */
+        .simple-page {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            min-height: 500px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #999;
+            animation: fadeIn 1s ease-out 0.3s backwards;
+        }
+
+        .empty-state-icon {
+            font-size: 80px;
+            margin-bottom: 25px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .empty-state h3 {
+            font-size: 24px;
+            color: #555;
+            margin-bottom: 12px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .empty-state p {
+            font-size: 16px;
+            color: #999;
+        }
+
+        /* Visible class */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .content-page {
+            display: none;
+        }
+
+        .content-page.active {
+            display: block;
+        }
+
+        /* QR Code Display */
+        .qr-display {
+            text-align: center;
+            padding: 50px;
+            animation: fadeIn 0.8s ease-out 0.3s backwards;
+        }
+
+        .qr-code {
+            width: 320px;
+            height: 320px;
+            margin: 30px auto;
+            border: 3px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .qr-code:hover {
+            transform: scale(1.05);
+        }
+
+        .member-id {
+            font-size: 28px;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            margin-top: 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .qr-description {
+            margin-top: 20px;
+            color: #666;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .profile-container {
+                flex-direction: column;
+            }
+
+            .profile-left {
+                width: 100%;
+            }
+
+            .header-nav {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="page active">
+        <div class="login-page">
+            <div class="login-container">
+                <div class="logo">
+                    <span class="logo-icon"></span>
+                    <span class="logo-text">ekms</span>
+                </div>
+                <div class="login-box">
+                    <div class="login-header">Login</div>
+                    <div class="login-body">
+                        <div class="input-group">
+                            <input type="text" class="login-input" id="username" placeholder="Username">
+                            <span class="input-icon">👤</span>
+                        </div>
+                        <div class="input-group">
+                            <input type="password" class="login-input" id="password" placeholder="Password">
+                            <span class="input-icon">🔑</span>
+                        </div>
+                        <div class="login-links">
+                            <a onclick="showForgotPassword(event)"><span class="info-icon">i</span> Forgot Password?</a>
+                            <a onclick="showRegister(event)"><span class="info-icon">+</span> New Registration Request</a>
+                        </div>
+                        <button class="login-button" onclick="login()">Login</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="page">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <div class="header-logo">
+                    <div class="header-logo-circle">🎓</div>
+                    <div class="header-text">
+                        <div class="header-subtitle">UNIVERSITI PENDIDIKAN SULTAN IDRIS</div>
+                        <div class="header-title">PERPUSTAKAAN TUANKU BAINUN</div>
+                    </div>
+                </div>
+                <div class="header-nav">
+                    <a href="#" onclick="showPage('profile')">Home</a>
+                    <a href="#">E-Resources</a>
+                    <a href="#">More Info</a>
+                    <a href="#">VR360</a>
+                    <a href="#">D20231106352</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <ul class="sidebar-menu">
+                    <li><a href="#" onclick="showPage('profile')" class="active">📋 Profile Details</a></li>
+                    <li><a href="#" onclick="showPage('qrcode')">📱 My QR Code</a></li>
+                    <li><a href="#" onclick="showPage('favourites')">⭐ My Favourites</a></li>
+                    <li><a href="#" onclick="showPage('ill')">📚 My ILL</a></li>
+                    <li><a href="#" onclick="showPage('suggestions')">💡 My Suggestions</a></li>
+                    <li><a href="#" onclick="showPage('emails')">📧 My Emails</a></li>
+                    <li><a href="#" onclick="showPage('loans')">📖 My Loans/Renews</a></li>
+                    <li><a href="#" onclick="showPage('illloans')">📚 My ILL Loans</a></li>
+                    <li><a href="#" onclick="showPage('history')">📋 My Loan History</a></li>
+                    <li><a href="#" onclick="showPage('reservations')">🔖 My Reservations</a></li>
+                    <li><a href="#" onclick="showPage('overdues')">⚠️ My Overdues</a></li>
+                    <li><a href="#" onclick="showPage('fines')">💰 My Fines</a></li>
+                    <li><a href="#" onclick="showPage('charges')">💳 My Other Charges</a></li>
+                    <li><a href="#" onclick="showPage('search')">🔍 My Search History</a></li>
+                    <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+                </ul>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Profile Details Page -->
+                <div id="profilePage" class="content-page active">
+                    <h1 class="page-title">Profile Details</h1>
+                    <div class="profile-container">
+                        <div class="profile-left">
+                            <div class="profile-avatar">
+                                <div class="avatar-placeholder"></div>
+                            </div>
+                            <div class="profile-name">MUHAMMAD TAUFIQ HIDAYAT BIN JOHARI</div>
+                            <div class="profile-email">muhdtaufiqhidayat13@gmail.com</div>
+                            <div class="profile-address">LOT 2341 KAMPUNG LARAK PENDEK 15100, KOTA BHARU, Kelantan, 15100</div>
+                        </div>
+                        <div class="profile-right">
+                            <div class="profile-info">
+                                <div class="info-row">
+                                    <div class="info-label">Member Id:</div>
+                                    <div class="info-value">D20231106352</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Contact No:</div>
+                                    <div class="info-value">0125418141</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Membership:</div>
+                                    <div class="info-value">16/10/2023 - 31/03/2027</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Final Borrow Date:</div>
+                                    <div class="info-value">17/03/2027</div>
+                                </div>
+                            </div>
+                            <div class="profile-actions">
+                                <button class="btn btn-primary">Update Info</button>
+                                <button class="btn btn-secondary">Change Password</button>
+                            </div>
+                            <div class="profile-actions">
+                                <button class="btn btn-primary">Update Profile Pic</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QR Code Page -->
+                <div id="qrcodePage" class="content-page">
+                    <h1 class="page-title">My QR Code</h1>
+                    <div class="simple-page">
+                        <div class="qr-display">
+                            <div class="qr-code">
+                                <svg width="280" height="280" viewBox="0 0 280 280">
+                                    <rect width="280" height="280" fill="white"/>
+                                    <g fill="black">
+                                        <rect x="30" y="30" width="70" height="70"/>
+                                        <rect x="180" y="30" width="70" height="70"/>
+                                        <rect x="30" y="180" width="70" height="70"/>
+                                        <rect x="120" y="120" width="40" height="40"/>
+                                        <rect x="170" y="170" width="30" height="30"/>
+                                    </g>
+                                </svg>
+                            </div>
+                            <div class="member-id">Member ID: D20231106352</div>
+                            <p class="qr-description">Scan this QR code for quick library access</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Other Pages -->
+                <div id="favouritesPage" class="content-page">
+                    <h1 class="page-title">My Favourites</h1>
+                    <div class="simple-page">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">⭐</div>
+                            <h3>No Favourites Yet</h3>
+                            <p>Items you mark as favourite will appear here</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="illPage" class="content-page">
+                    <h1 class="page-title">My ILL</h1>
+                    <div class="simple-page">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📚</div>
+                            <h3>No Inter-Library Loans</h3>
+                            <p>Your inter-library loan requests will appear here</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="suggestionsPage" class="content-page">
+                    <h1 class="page-title">My Suggestions</h1>
+                    <div class="simple-page">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">💡</div>
+                            <h3>No Suggestions</h3>
+                            <p>Your book suggestions will be tracked here</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="emailsPage" class="content-page">
+                    <h1 class="page-title">My Emails</h1>
+                    <div class="simple-page">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📧</div>
+                            <h3>No Emails</h3>
+                            <p>Library notifications will appear here</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="loansPage" class="content-page">
+                    <h1 class="page-title">My Loans/Renews</h1>
+                    <div class="simple-page">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📖</div>
+                            <h3>No Current Loans</h3>
+                            <p>Your borrowed items will appear here</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="illloansPage" class="content-page">
+                    <h1 class="page-title">My ILL Loans</h1>
+                    <div class="simple-page">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📚</div>
+                            <h3>No ILL Loans</h3>
+                            <p>Your inter-library loans will appear here</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="historyPage" class="content-page">
+                    <h1 class="page-title">My Loan History</h1>
+                    <div class="simple-page">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📋</div>
+                            <h3>No Loan History</h3>
+                            <p>Your borrowing history will be recorded here</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="reservationsPage" class="content-page">
+                    <h1 class="page-title">My Reservations</h1>
+                    <div class="simple-page">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">🔖</div>
+                            <h3>No Reservations</h3>
+                            <p>Your reserved items will appear here</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="overduesPage" class="content-page">
+                    <h1 class="page-title">My Overdues</h1>
+                    <div class="simple-page">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">⚠️</div>
+                            <h3>No Overdue Items</h3>
+                            <p>Keep up the good work!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="finesPage" class="content-page">
+                    <h1 class="page-title">My Fines</h1>
+                    <div class="simple-page">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">💰</div>
+                            <h3>No Outstanding Fines</h3>
+                            <p>Your fine history will appear here</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="chargesPage" class="content-page">
+                    <h1 class="page-title">My Other Charges</h1>
+                    <div class="simple-page">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">💳</div>
+                            <h3>No Other Charges</h3>
+                            <p>Additional charges will appear here</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="searchPage" class="content-page">
+                    <h1 class="page-title">My Search History</h1>
+                    <div class="simple-page">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">🔍</div>
+                            <h3>No Search History</h3>
+                            <p>Your search queries will be saved here</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Login tanpa validation - terus masuk
+            document.getElementById('loginPage').classList.remove('active');
+            document.getElementById('mainApp').classList.add('active');
+        }
+
+        function showForgotPassword(event) {
+            if (event) event.preventDefault();
+            console.log('Showing forgot password page');
+            document.getElementById('loginPage').classList.remove('active');
+            document.getElementById('forgotPasswordPage').classList.add('active');
+        }
+
+        function showRegister(event) {
+            if (event) event.preventDefault();
+            console.log('Showing register page');
+            document.getElementById('loginPage').classList.remove('active');
+            document.getElementById('registerPage').classList.add('active');
+        }
+
+        function backToLogin(event) {
+            if (event) event.preventDefault();
+            console.log('Back to login');
+            document.getElementById('forgotPasswordPage').classList.remove('active');
+            document.getElementById('registerPage').classList.remove('active');
+            document.getElementById('loginPage').classList.add('active');
+        }
+
+        function submitForgotPassword() {
+            const email = document.getElementById('resetEmail').value;
+            if (email) {
+                alert('Password reset link has been sent to your email!');
+                backToLogin(event);
+            } else {
+                alert('Please enter your email or member ID');
+            }
+        }
+
+        function submitRegistration() {
+            const fullName = document.getElementById('regFullName').value;
+            const email = document.getElementById('regEmail').value;
+            const phone = document.getElementById('regPhone').value;
+            const studentId = document.getElementById('regStudentId').value;
+            const userType = document.getElementById('regUserType').value;
+            
+            if (fullName && email && phone && studentId && userType) {
+                alert('Registration submitted successfully! You will receive confirmation via email.');
+                backToLogin(event);
+            } else {
+                alert('Please fill in all required fields');
+            }
+        }
+
+        function logout() {
+            document.getElementById('mainApp').classList.remove('active');
+            document.getElementById('loginPage').classList.add('active');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        function showPage(pageName, event) {
+            // Prevent default link behavior
+            if (event) {
+                event.preventDefault();
+            }
+            
+            const contentPages = document.querySelectorAll('.content-page');
+            contentPages.forEach(page => page.classList.remove('active'));
+            
+            document.getElementById(pageName + 'Page').classList.add('active');
+            
+            const menuItems = document.querySelectorAll('.sidebar-menu a');
+            menuItems.forEach(item => item.classList.remove('active'));
+            
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+        }
+        
+        // Allow Enter key to login
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginInputs = document.querySelectorAll('#loginPage .login-input');
+            loginInputs.forEach(input => {
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        login();
+                    }
+                });
+            });
+
+            // Enter key for forgot password
+            const resetInput = document.getElementById('resetEmail');
+            if (resetInput) {
+                resetInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        submitForgotPassword();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+                                    
